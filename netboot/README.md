@@ -22,7 +22,7 @@ tftpd_opts: ""
 - `web_app_port`: Port fuer die netboot.xyz Verwaltungsoberflaeche (Standard `3000`).
 - `nginx_port`: Port fuer bereitgestellte Assets/Dateien (Standard `85`).
 - `path`: Host-Pfad fuer Assets/Images.
-- `path_config`: Host-Pfad fuer netboot Konfiguration.
+- `path_config`: Host-Pfad fuer persistente Menue-Konfiguration (`/config/menus`).
 - `tftpd_opts`: Optionale TFTP-Server Parameter.
 
 ## Externer DHCP (Beispiel)
@@ -45,3 +45,6 @@ Typische Boot-Dateien:
 - Die Web-Konfiguration ist unter `http://<HA-IP>:3000` erreichbar.
 - Fuer die Home-Assistant-Seitenleiste wird intern ein Ingress-Proxy verwendet, um
   absolute Webpfade der netboot.xyz UI kompatibel zu machen.
+- `path_config` wird bewusst nur fuer Menue-Daten genutzt, damit die netboot Webapp stabil bleibt.
+- Das Startskript setzt Schreibrechte auf `path`/`path_config`, damit die Webapp nicht
+  in einen Restart-Loop faellt, wenn Host-Mounts nur root-schreibbar sind.

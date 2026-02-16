@@ -24,6 +24,9 @@ export NGINX_PORT
 export TFTPD_OPTS
 
 mkdir -p "${PATH_ASSETS}" "${PATH_CONFIG}"
+# Webapp laeuft als non-root User (nbxyz). Auf Host-Mounts (/media/...) fehlen
+# sonst haeufig Schreibrechte und der Webprozess crasht in einer Restart-Schleife.
+chmod 0777 "${PATH_ASSETS}" "${PATH_CONFIG}" || true
 
 if [ -L /assets ]; then
   rm -f /assets
@@ -34,23 +37,25 @@ else
 fi
 ln -s "${PATH_ASSETS}" /assets
 
-if [ -L /config ]; then
-  rm -f /config
-elif [ -d /config ]; then
-  if grep -q " /config " /proc/mounts; then
-    echo "[netboot addon] /config ist ein Mount und wird nicht ersetzt."
-  else
-    rm -rf /config
-  fi
-else
-  rm -f /config || true
-fi
+# WICHTIG:
+# /config komplett zu ersetzen kann den Webapp-Dienst (Port 3000) brechen.
+# Deshalb bleibt /config als Basis erhalten und nur relevante Inhalte werden nach path_config ausgelagert.
+mkdir -p /config
+mkdir -p "${PATH_CONFIG}/menus"
+chmod 0777 "${PATH_CONFIG}/menus" || true
 
-if [ ! -e /config ]; then
-  ln -s "${PATH_CONFIG}" /config
+if [ -L /config/menus ]; then
+  rm -f /config/menus
+elif [ -d /config/menus ]; then
+  if [ -n "$(ls -A /config/menus 2>/dev/null)" ]; then
+    cp -a /config/menus/. "${PATH_CONFIG}/menus/" || true
+  fi
+  rm -rf /config/menus
 fi
+ln -s "${PATH_CONFIG}/menus" /config/menus
 
 mkdir -p /config/nginx/site-confs /config/menus/remote /config/menus/local
+chmod 0777 /config/menus /config/menus/remote /config/menus/local || true
 
 if [ -n "${MENU_VERSION}" ]; then
   export MENU_VERSION
@@ -104,6 +109,8 @@ server {
 EOF
 
 echo "[netboot addon] Mapping Assets: ${PATH_ASSETS} -> /assets"
-echo "[netboot addon] Mapping Config: ${PATH_CONFIG} -> /config"
+echo "[netboot addon] Mapping Config-Menus: ${PATH_CONFIG}/menus -> /config/menus"
+echo "[netboot addon] Schreibtest Assets-Pfad: $( [ -w "${PATH_ASSETS}" ] && echo ok || echo fail )"
+echo "[netboot addon] Schreibtest Config-Pfad: $( [ -w "${PATH_CONFIG}/menus" ] && echo ok || echo fail )"
 echo "[netboot addon] Starte netboot.xyz (WebUI ${WEB_APP_PORT}, HTTP ${NGINX_PORT}, TFTP 69/udp)..."
 exec /start.sh
