@@ -1,0 +1,129 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #111827;
+  color: #f3f4f6;
+}
+
+.container {
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+h1, h2 {
+  margin: 0.2rem 0 0.8rem;
+}
+
+section {
+  background: #1f2937;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  font-size: 0.92rem;
+  margin-bottom: 0.8rem;
+}
+
+input, textarea, button {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 0.35rem;
+  padding: 0.62rem 0.68rem;
+  border-radius: 6px;
+  border: 1px solid #4b5563;
+  background: #0f172a;
+  color: #f3f4f6;
+}
+
+button {
+  width: auto;
+  cursor: pointer;
+  background: #2563eb;
+  border-color: #2563eb;
+  font-weight: 600;
+}
+
+button.secondary {
+  background: #374151;
+  border-color: #4b5563;
+}
+
+.grid2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.actions {
+  margin-top: 0.75rem;
+}
+
+.msg {
+  margin: 0 0 1rem;
+  padding: 0.75rem;
+  border-radius: 6px;
+}
+
+.msg.success {
+  background: #064e3b;
+  border: 1px solid #10b981;
+}
+
+.msg.error {
+  background: #7f1d1d;
+  border: 1px solid #f43f5e;
+}
+
+.status {
+  margin-top: 0;
+  color: #d1d5db;
+}
+
+.topnav {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.2rem 0 1rem;
+}
+
+.topnav a {
+  text-decoration: none;
+  color: #dbeafe;
+  background: #1e3a8a;
+  border: 1px solid #3b82f6;
+  padding: 0.45rem 0.65rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+.topnav a.active {
+  background: #2563eb;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid #374151;
+  padding: 0.55rem;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+th {
+  background: #111827;
+}
+
+.hint {
+  margin: 0 0 0.6rem;
+  color: #d1d5db;
+}
+
+.inline {
+  margin-top: 0.5rem;
+}

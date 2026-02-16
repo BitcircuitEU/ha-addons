@@ -1,0 +1,23 @@
+name: "DHCP Server Manager"
+version: "1.0.2"
+slug: "dhcp_server"
+description: "Verwaltbarer DHCP-Server mit Web-GUI fuer Home Assistant."
+url: "https://github.com/BitcircuitEU/ha-addons/tree/main/dhcp-server"
+startup: services
+boot: auto
+init: false
+arch:
+  - amd64
+  - aarch64
+host_network: true
+privileged:
+  - NET_ADMIN
+ingress: true
+ingress_port: 8099
+panel_icon: mdi:router-network
+panel_title: DHCP Server
+webui: "http://[HOST]:[PORT:8099]"
+options:
+  dhcp_interface: "eth0"
+schema:
+  dhcp_interface: str

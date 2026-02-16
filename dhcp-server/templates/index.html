@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% if ingress_path %}
+  <base href="{{ ingress_path }}/">
+  {% endif %}
+  <title>DHCP Server Manager</title>
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>DHCP Server Manager</h1>
+    <nav class="topnav">
+      <a class="active" href="./">Konfiguration</a>
+      <a href="leases">Lease Uebersicht</a>
+    </nav>
+    <p class="status">Dienststatus: <strong>{{ status }}</strong></p>
+
+    {% if message %}
+      <div class="msg success">{{ message }}</div>
+    {% endif %}
+    {% if error %}
+      <div class="msg error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post" action="apply">
+      <section>
+        <h2>DHCP Bereich</h2>
+        <label>Subnetz (CIDR)
+          <input type="text" name="subnet_cidr" value="{{ config.subnet_cidr }}" required>
+        </label>
+        <div class="grid2">
+          <label>Range Start
+            <input type="text" name="range_start" value="{{ config.range_start }}" required>
+          </label>
+          <label>Range Ende
+            <input type="text" name="range_end" value="{{ config.range_end }}" required>
+          </label>
+        </div>
+        <label>Lease Zeit
+          <input type="text" name="lease_time" value="{{ config.lease_time }}" placeholder="12h" required>
+        </label>
+      </section>
+
+      <section>
+        <h2>DHCP Optionen</h2>
+        <label>Router (Option 3)
+          <input type="text" name="router" value="{{ config.router }}">
+        </label>
+        <label>DNS Server (Option 6, kommasepariert)
+          <input type="text" name="dns_servers" value="{{ config.dns_servers }}">
+        </label>
+        <label>Domain Name (Option 15)
+          <input type="text" name="domain_name" value="{{ config.domain_name }}">
+        </label>
+        <label>NTP Server (Option 42)
+          <input type="text" name="ntp_server" value="{{ config.ntp_server }}">
+        </label>
+      </section>
+
+      <section>
+        <h2>Erweiterte Optionen</h2>
+        <label>Zusaetzliche dhcp-option Zeilen (eine pro Zeile, mit oder ohne Praefix dhcp-option=)
+          <textarea name="additional_options" rows="6">{{ config.additional_options }}</textarea>
+        </label>
+      </section>
+
+      <section>
+        <h2>Statische Leases</h2>
+        <p class="hint">Format pro Zeile: <code>MAC,IP,Hostname</code> (Hostname optional)</p>
+        <textarea name="static_leases" rows="8">{{ config.static_leases }}</textarea>
+      </section>
+
+      <div class="actions">
+        <button type="submit">Speichern und Anwenden</button>
+      </div>
+    </form>
+
+    <form method="post" action="reload" class="inline">
+      <button type="submit" class="secondary">dnsmasq neu starten</button>
+    </form>
+  </main>
+</body>
+</html>

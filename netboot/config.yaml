@@ -1,5 +1,5 @@
 name: "netboot.xyz PXE Server"
-version: "1.0.3"
+version: "1.0.4"
 slug: "netboot"
 description: "netboot.xyz als PXE/TFTP/HTTP Server fuer externe DHCP-Umgebungen."
 url: "https://github.com/BitcircuitEU/ha-addons/tree/main/netboot"

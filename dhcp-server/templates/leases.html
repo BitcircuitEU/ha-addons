@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {% if ingress_path %}
+  <base href="{{ ingress_path }}/">
+  {% endif %}
+  <title>DHCP Leases</title>
+  <meta http-equiv="refresh" content="15">
+  <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+  <main class="container">
+    <h1>DHCP Lease Uebersicht</h1>
+    <nav class="topnav">
+      <a href="./">Konfiguration</a>
+      <a class="active" href="leases">Lease Uebersicht</a>
+    </nav>
+    <p class="status">Dienststatus: <strong>{{ status }}</strong> | Auto-Refresh: 15s</p>
+
+    <section>
+      {% if leases %}
+      <table>
+        <thead>
+          <tr>
+            <th>IP</th>
+            <th>MAC</th>
+            <th>Hostname</th>
+            <th>Client-ID</th>
+            <th>Ablauf (Epoch)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for lease in leases %}
+          <tr>
+            <td>{{ lease.ip }}</td>
+            <td>{{ lease.mac }}</td>
+            <td>{{ lease.hostname or "-" }}</td>
+            <td>{{ lease.clientid or "-" }}</td>
+            <td>{{ lease.expiry_epoch }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <p>Aktuell keine Leases vorhanden.</p>
+      {% endif %}
+    </section>
+  </main>
+</body>
+</html>
