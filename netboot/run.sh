@@ -5,19 +5,52 @@ OPTIONS_FILE="/data/options.json"
 
 MENU_VERSION=""
 WEB_APP_PORT="3000"
-NGINX_PORT="80"
+NGINX_PORT="85"
+PATH_ASSETS="/media/netboot/image"
+PATH_CONFIG="/media/netboot/config"
 TFTPD_OPTS=""
 
 if [ -f "${OPTIONS_FILE}" ]; then
   MENU_VERSION="$(jq -r '.menu_version // ""' "${OPTIONS_FILE}")"
   WEB_APP_PORT="$(jq -r '.web_app_port // 3000' "${OPTIONS_FILE}")"
-  NGINX_PORT="$(jq -r '.nginx_port // 80' "${OPTIONS_FILE}")"
+  NGINX_PORT="$(jq -r '.nginx_port // 85' "${OPTIONS_FILE}")"
+  PATH_ASSETS="$(jq -r '.path // "/media/netboot/image"' "${OPTIONS_FILE}")"
+  PATH_CONFIG="$(jq -r '.path_config // "/media/netboot/config"' "${OPTIONS_FILE}")"
   TFTPD_OPTS="$(jq -r '.tftpd_opts // ""' "${OPTIONS_FILE}")"
 fi
 
 export WEB_APP_PORT
 export NGINX_PORT
 export TFTPD_OPTS
+
+mkdir -p "${PATH_ASSETS}" "${PATH_CONFIG}"
+
+if [ -L /assets ]; then
+  rm -f /assets
+elif [ -d /assets ]; then
+  rm -rf /assets
+else
+  rm -f /assets || true
+fi
+ln -s "${PATH_ASSETS}" /assets
+
+if [ -L /config ]; then
+  rm -f /config
+elif [ -d /config ]; then
+  if grep -q " /config " /proc/mounts; then
+    echo "[netboot addon] /config ist ein Mount und wird nicht ersetzt."
+  else
+    rm -rf /config
+  fi
+else
+  rm -f /config || true
+fi
+
+if [ ! -e /config ]; then
+  ln -s "${PATH_CONFIG}" /config
+fi
+
+mkdir -p /config/nginx/site-confs /config/menus/remote /config/menus/local
 
 if [ -n "${MENU_VERSION}" ]; then
   export MENU_VERSION
@@ -70,5 +103,7 @@ server {
 }
 EOF
 
+echo "[netboot addon] Mapping Assets: ${PATH_ASSETS} -> /assets"
+echo "[netboot addon] Mapping Config: ${PATH_CONFIG} -> /config"
 echo "[netboot addon] Starte netboot.xyz (WebUI ${WEB_APP_PORT}, HTTP ${NGINX_PORT}, TFTP 69/udp)..."
 exec /start.sh

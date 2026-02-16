@@ -10,12 +10,20 @@ Dieses Add-on stellt `netboot.xyz` als lokalen PXE-Server bereit (TFTP + HTTP + 
 ## Konfiguration
 
 ```yaml
+menu_version: ""
 web_app_port: 3000
-nginx_port: 80
+nginx_port: 85
+path: /media/netboot/image
+path_config: /media/netboot/config
+tftpd_opts: ""
 ```
 
+- `menu_version`: Optional feste netboot.xyz Release-Version.
 - `web_app_port`: Port fuer die netboot.xyz Verwaltungsoberflaeche (Standard `3000`).
-- `nginx_port`: Port fuer bereitgestellte Assets/Dateien (Standard `80`).
+- `nginx_port`: Port fuer bereitgestellte Assets/Dateien (Standard `85`).
+- `path`: Host-Pfad fuer Assets/Images.
+- `path_config`: Host-Pfad fuer netboot Konfiguration.
+- `tftpd_opts`: Optionale TFTP-Server Parameter.
 
 ## Externer DHCP (Beispiel)
 
@@ -32,6 +40,8 @@ Typische Boot-Dateien:
 ## Hinweise
 
 - Das Add-on verwendet `host_network: true`, damit PXE/TFTP im LAN korrekt funktioniert.
+- Das Add-on ist auf `full_access: true` gesetzt, damit du im Add-on den Schutzmodus deaktivieren
+  und Vollzugriff auf den Host fuer gemappte Pfade nutzen kannst.
 - Die Web-Konfiguration ist unter `http://<HA-IP>:3000` erreichbar.
 - Fuer die Home-Assistant-Seitenleiste wird intern ein Ingress-Proxy verwendet, um
   absolute Webpfade der netboot.xyz UI kompatibel zu machen.
