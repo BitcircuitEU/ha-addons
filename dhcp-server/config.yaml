@@ -1,5 +1,5 @@
 name: "DHCP Server Manager"
-version: "1.0.2"
+version: "1.0.3"
 slug: "dhcp_server"
 description: "Verwaltbarer DHCP-Server mit Web-GUI fuer Home Assistant."
 url: "https://github.com/BitcircuitEU/ha-addons/tree/main/dhcp-server"

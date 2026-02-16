@@ -1,13 +1,14 @@
-ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:3.20
+ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
 RUN apk add --no-cache \
     bash \
     jq \
     python3 \
-    py3-pip \
+    py3-flask \
+    py3-gunicorn \
     dnsmasq \
-    && pip3 install --no-cache-dir flask gunicorn
+    && true
 
 COPY run.sh /run.sh
 COPY app.py /app.py
