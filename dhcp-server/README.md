@@ -24,7 +24,7 @@ dhcp_interface: eth0
 
 - Das Add-on verwendet `host_network: true`.
 - Stelle sicher, dass kein anderer DHCP-Server im selben Segment aktiv ist.
-- Die GUI ist ueber die Seitenleiste (Ingress) und optional direkt via `:8099` erreichbar.
+- Die GUI ist ueber die Seitenleiste (Ingress) und optional direkt via `:18123` erreichbar.
 
 ## Test-Checkliste
 

@@ -6,7 +6,7 @@ STATE_FILE="/data/config.json"
 DNSMASQ_CONF="/data/dnsmasq.conf"
 
 DHCP_INTERFACE="eth0"
-WEB_PORT="8099"
+WEB_PORT="18123"
 
 if [ -f "${OPTIONS_FILE}" ]; then
   DHCP_INTERFACE="$(jq -r '.dhcp_interface // "eth0"' "${OPTIONS_FILE}")"

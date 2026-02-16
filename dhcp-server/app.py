@@ -324,5 +324,5 @@ def health():
 
 
 if __name__ == "__main__":
-    port = int(os.getenv("WEB_PORT", "8099"))
+    port = int(os.getenv("WEB_PORT", "18123"))
     app.run(host="0.0.0.0", port=port)
